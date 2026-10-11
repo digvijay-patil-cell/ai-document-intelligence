@@ -7,7 +7,14 @@ import uuid
 # CONFIG
 # =========================================================
 
-API_BASE_URL = "http://127.0.0.1:8000"
+import os
+
+
+API_BASE_URL = (
+    os.getenv("API_BASE_URL")
+    or st.secrets.get("API_BASE_URL", "http://127.0.0.1:8000")
+).rstrip("/")
+
 
 st.set_page_config(
     page_title="AI Document Intelligence",
