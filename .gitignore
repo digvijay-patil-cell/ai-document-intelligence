@@ -21,4 +21,7 @@ chroma_db/
 Thumbs.db
 
 # Logs
+
+
+requirements.backup.txt
 *.log

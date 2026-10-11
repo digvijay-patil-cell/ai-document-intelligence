@@ -1,6 +1,5 @@
 from langchain_core.tools import tool
 
-from RAG.retriever import retrieve_documents
 from database.connection import SessionLocal
 from database.models import Employee
 
@@ -11,7 +10,7 @@ def search_documents(question: str):
     Search company documents using ChromaDB and return relevant
     document chunks along with their source PDF names.
     """
-
+    from RAG.bm25_retriever import retrieve_documents
     results = retrieve_documents(question)
 
     # Get retrieved document chunks

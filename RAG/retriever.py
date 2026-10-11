@@ -2,8 +2,17 @@ from sentence_transformers import SentenceTransformer
 import chromadb
 
 
-# Load the same embedding model used during storage
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+# Embedding model will be loaded only when needed
+embedding_model = None
+
+
+def get_embedding_model():
+    global embedding_model
+
+    if embedding_model is None:
+        embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+
+    return embedding_model
 
 
 # Connect to existing ChromaDB
@@ -19,7 +28,9 @@ collection = chroma_client.get_collection(
 def retrieve_documents(question, top_k=3):
 
     # Convert user question into an embedding
-    question_embedding = embedding_model.encode(question).tolist()
+    model = get_embedding_model()
+
+    question_embedding = model.encode(question).tolist()
 
     # Search ChromaDB
     results = collection.query(

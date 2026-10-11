@@ -9,9 +9,19 @@ from document_chunker import process_all_documents
 # 1. Load Embedding Model
 # --------------------------------
 
-embedding_model = SentenceTransformer(
-    "all-MiniLM-L6-v2"
-)
+embedding_model = None
+
+
+def get_embedding_model():
+
+    global embedding_model
+
+    if embedding_model is None:
+        embedding_model = SentenceTransformer(
+            "all-MiniLM-L6-v2"
+        )
+
+    return embedding_model
 
 
 # --------------------------------
@@ -68,8 +78,11 @@ def store_embeddings():
         text = chunk["text"]
         source = chunk["source"]
 
+        # Load embedding model only when needed
+        model = get_embedding_model()
+
         # Convert text into numerical vector
-        embedding = embedding_model.encode(
+        embedding = model.encode(
             text
         ).tolist()
 
